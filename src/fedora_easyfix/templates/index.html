@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- For bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <title>Fedora Easyfix</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid d-flex">
+            <!-- TODO Full menu should be available on desktop-->
+            <a class="navbar-brand flex-lg-fill" href="#">
+                <!-- TODO Optimize logo -->
+                <img src="../static/imgs/easyfix-logo-not-optimized.png" alt="Fedora Logo">
+            </a>
+            <button class="navbar-toggler d-flex justify-self-end" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Fedora Easyfix</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a href="https://getfedora.org" target="_blank" class="nav-link">Get Fedora</a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://pagure.io" target="_blank" class="nav-link">Pagure<a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://docs.fedoraproject.org/docs/" target="_blank" class="nav-link">Docs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://fedoraproject.org/wiki/Communicating_and_getting_help?rd=IRC"
+                                target="_blank" class="nav-link">Help</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header>
+        <!-- Add orientation focused content here -->
+    </header>
+    <main class="container-fluid">
+        <!-- Quick Search -->
+        <section class="container">
+            <form action="GET">
+                <!-- Search Bar -->
+                <label for="search-bar">Search up a project here</label>
+                <!-- Search Options -->
+                <input type="text" id="search-bar" placeholder="Search or add filters...">
+                <label for="sort-by">Sort by:</label>
+                <select name="sort-by" id="sort-by">
+                    <option value="most-active">Most active</option>
+                    <option value="recent">Most recent</option>
+                    <option value="open-date">Open date</option>
+                    <option value="close-date">Close Date</option>
+                    <option value="last-modified">Last modified</option>
+                    <option value="priority">Priority</option>
+                </select>
+            </form>
+        </section>
+        <!-- Easy Fix Topics -->
+        <div class="container">
+            <h1>Open Projects</h1>
+            <article class="card">
+                <h2 class="card-title">avocado-framework/avocado</h2>
+                <ul>
+                    <li><a href="#">Testing</a></li>
+                    <li><a href="#">Linux</a></li>
+                    <li><a href="#">Python</a></li>
+                    <li><a href="#">Shell</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">JavaScript</a></li>
+                    <li><a href="#">HTML</a></li>
+                    <li><a href="#">Makeshift</a></li>
+                </ul>
+                <section>
+                    <p>Contact: <a href="mailto:fedoralinux@opensource.io"><span></span>derofa</a>
+                    <p>Last modified: <span>23 hours ago</span></p>
+                </section>
+            </article>
+            <!-- This should feel clearly within the above card's hierarchy -->
+            <article class="card">
+                <section>
+                    <h3 class="card-title">#1247664</h3>
+                    <div>
+                        <a href="#">bug</a>
+                    </div>
+                </section>
+                <section>
+                    <div>
+                        <p>Notifications disappear when clicking outside</p>
+                    </div>
+                    <div>
+                        <p>Last modified: 2 days ago</p>
+                    </div>
+                </section>
+            </article>
+            <article class="card">
+                <h2 class="card-title">Fedora Infra/Bodhi</h2>
+                <ul>
+                    <li><a href="#">Python</a></li>
+                    <li><a href="#">HTML</a></li>
+                    <li><a href="#">Jinja</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">Shell</a></li>
+                    <ul>
+                        <p>Contact: <a href="mailto:fedoralinux@opensource.io"><span></span>hibod</a></p>
+                        <p>Last modified: <span>66 minutes ago</span></p>
+                        </section>
+            </article>
+        </div>
+        <!-- Quick Search -->
+        <section class="container">
+            <form action="GET">
+                <!-- Search Bar -->
+                <label for="search-bar">Search up a project here</label>
+                <!-- Search Options -->
+                <input type="text" id="search-bar" placeholder="Search or add filters...">
+                <label for="sort-by">Sort by:</label>
+                <select name="sort-by" id="sort-by">
+                    <option value="most-active">Most active</option>
+                    <option value="recent">Most recent</option>
+                    <option value="open-date">Open date</option>
+                    <option value="close-date">Close Date</option>
+                    <option value="last-modified">Last modified</option>
+                    <option value="priority">Priority</option>
+                </select>
+            </form>
+        </section>
+        <!-- Easy Fix Topics -->
+    </main>
+    <footer>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-md-4 footer-column">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <span class="footer-title">About</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Get Fedora</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Fedora Magazine</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 footer-column">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <span class="fw-bold footer-title">Support</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Get Help</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Ask Fedora</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Fedora Developer Portal</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 footer-column">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <span class="fw-bold footer-title">Community</span>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link">Join Fedora</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Fedora</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#"><i class="fas fa-envelope"></i>Plannet Fedora</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center"><i class="fas fa-ellipsis-h"></i></div>
+
+            <div class="row text-center">
+                <div class="col-md-4 box">
+                    <span class="fw-bold copyright quick-links">
+                        Copyright &copy; Fedora
+                    </span>
+                </div>
+                <div class="col-md-4 box">
+                    <ul class="list-inline social-buttons">
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 box">
+                    <ul class="list-inline quick-links">
+                        <li class="list-inline-item">
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
