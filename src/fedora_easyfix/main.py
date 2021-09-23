@@ -21,10 +21,77 @@
 """
 
 import click
-from flask import Flask, render_template
 from fedora_easyfix.__init__ import __version__
+from fedora_easyfix.utilities.consumer import (
+    ErraticReturns,
+    TicketDataRetrieval,
+)
+from flask import Flask, jsonify, render_template, request
 
 main = Flask(__name__)
+
+
+@main.get("/0/preliminary/")
+def return_preliminary_information():
+    try:
+        return_data = TicketDataRetrieval().retrieve_preliminary_information()
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/")
+def return_forge_list():
+    try:
+        return_data = TicketDataRetrieval().retrieve_forge_list()
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/<string:forge>/")
+def return_forge_information(forge):
+    try:
+        return_data = TicketDataRetrieval().retrieve_forge_information(forge)
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/<string:forge>/repositories/")
+def return_repository_list(forge):
+    try:
+        return_data = TicketDataRetrieval().retrieve_repository_list(forge)
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/<string:forge>/repositories/<path:repository>/")
+def return_repository_information(forge, repository):
+    try:
+        return_data = TicketDataRetrieval().retrieve_repository_information(forge, repository)
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/<string:forge>/repositories/<path:repository>/issues/")
+def return_issue_list(forge, repository):
+    try:
+        return_data = TicketDataRetrieval().retrieve_issue_list(forge, repository)
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
+
+
+@main.get("/0/forges/<string:forge>/repositories/<path:repository>/issues/<string:number>/")
+def return_issue_information(forge, repository, number):
+    try:
+        return_data = TicketDataRetrieval().retrieve_issue_information(forge, repository, number)
+    except FileNotFoundError as expt:
+        return_data = ErraticReturns().file_read_error_return_data()
+    return jsonify(return_data)
 
 
 @main.get("/")

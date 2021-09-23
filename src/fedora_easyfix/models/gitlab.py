@@ -20,10 +20,11 @@
     SOFTWARE.
 """
 
-from json import loads
+import json
 
 from fedora_easyfix.utilities.composer import StatusDecorator
 from urllib3 import PoolManager
+from urllib3.exceptions import MaxRetryError, NewConnectionError
 
 httpobjc = PoolManager()
 api_base_url = "https://gitlab.com/api/v4/projects/"
@@ -51,7 +52,7 @@ class GitLabRepositories():
                 "state": "opened"
             }
         )
-        respdict = loads(respobjc.data)
+        respdict = json.loads(respobjc.data)
         ticket_count = 0
         ticket_list = {}
         for ticket in respdict:
@@ -73,7 +74,7 @@ class GitLabRepositories():
             "GET",
             api_project_endpoint,
         )
-        respdict = loads(respobjc.data)
+        respdict = json.loads(respobjc.data)
         ticket_dict = {
             "ticket_count": ticket_count,
             "ticket_list": ticket_list,
@@ -100,8 +101,12 @@ class GitLabRepositories():
                 self.repository_collection[repository_name], ticket_count = self.fetch_tickets_from_repository(repository_name)
                 statdcrt.general("[PASS] %s - Retrieved %s tickets" % (repository_name, ticket_count))
                 repositories_passed += 1
-            except Exception as expt:
-                statdcrt.general("[FAIL] %s - Failed to retrieve tickets" % repository_name)
+            except NewConnectionError as expt:
+                statdcrt.general("[FAIL] %s - Failed to retrieve tickets - Could not establish connection" % repository_name)
+                repositories_failed += 1
+                continue
+            except MaxRetryError as expt:
+                statdcrt.general("[FAIL] %s - Failed to retrieve tickets - Reached max number of retries" % repository_name)
                 repositories_failed += 1
                 continue
         statdcrt.success("%s passed, %s failed, %s total" %(repositories_passed, repositories_failed, repositories_total))
