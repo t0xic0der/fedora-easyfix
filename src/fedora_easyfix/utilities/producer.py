@@ -20,9 +20,9 @@
     SOFTWARE.
 """
 
-from json import dumps
-from sys import exit
-from time import time
+import json
+import sys
+import time
 
 from dotenv import dotenv_values
 from fedora_easyfix.__init__ import __version__
@@ -31,6 +31,7 @@ from fedora_easyfix.models.gitlab import GitLabRepositories
 from fedora_easyfix.models.pagure import PagureRepositories
 from fedora_easyfix.utilities.composer import StatusDecorator
 from urllib3 import PoolManager
+from urllib3.exceptions import MaxRetryError, NewConnectionError
 from yaml import CLoader, load
 
 httpobjc = PoolManager()
@@ -46,20 +47,22 @@ class Producer(object):
         self.gitlab_api_key = self.envrvars["GITLAB_API_KEY"]
         self.rplist_url = self.envrvars["RPLIST_URL"]
         self.yamldict = load(httpobjc.request("GET", self.rplist_url).data.decode(), Loader=CLoader)
-        self.ticket_collection = {}
+        self.ticket_collection = {
+            "forges": {},
+            "time_of_retrieval": 0.0
+        }
 
     def check_repolist_version_and_start(self):
         if self.yamldict["repolist_version"] == __version__:
             self.populate_ticket_collection()
-            self.ticket_collection["collection_updated_at"] = time()
+            self.ticket_collection["time_of_retrieval"] = time.time()
             self.write_index_to_local_json()
         else:
             statdcrt.failure("Could not index tickets")
             statdcrt.general("Repolist version does not correspond with the Easyfix version")
-            exit()
+            sys.exit()
 
     def populate_ticket_collection(self):
-        statdcrt.section("Indexing tickets...")
         if "github" in self.yamldict["forges"].keys():
             github_repository_list = self.yamldict["forges"]["github"]["repositories"]
             github_base_url = self.yamldict["forges"]["github"]["url"]
@@ -67,7 +70,7 @@ class Producer(object):
                 "Found %s repositories on GitHub" %
                 len(self.yamldict["forges"]["github"]["repositories"].keys())
             )
-            self.ticket_collection["github"] = GitHubRepositories(
+            self.ticket_collection["forges"]["github"] = GitHubRepositories(
                 github_repository_list,
                 github_base_url,
                 self.github_api_key,
@@ -80,7 +83,7 @@ class Producer(object):
                 "Found %s repositories on Pagure" %
                 len(self.yamldict["forges"]["pagure"]["repositories"].keys())
             )
-            self.ticket_collection["pagure"] = PagureRepositories(
+            self.ticket_collection["forges"]["pagure"] = PagureRepositories(
                 pagure_repository_list,
                 pagure_base_url,
                 self.pagure_api_key
@@ -92,7 +95,7 @@ class Producer(object):
                 "Found %s repositories on GitLab" %
                 len(self.yamldict["forges"]["gitlab"]["repositories"].keys())
             )
-            self.ticket_collection["gitlab"] = GitLabRepositories(
+            self.ticket_collection["forges"]["gitlab"] = GitLabRepositories(
                 gitlab_repository_list,
                 gitlab_base_url,
                 self.gitlab_api_key
@@ -100,24 +103,38 @@ class Producer(object):
 
     def write_index_to_local_json(self):
         try:
-            tickdata = dumps(self.ticket_collection, indent=4)
+            tickdata = json.dumps(self.ticket_collection, indent=4)
             with open("tickdata.json", "w") as tickfile:
                 tickfile.write(tickdata)
             statdcrt.section("Indexing complete!")
-        except Exception as expt:
+        except PermissionError as expt:
             statdcrt.failure("Could not index tickets")
             statdcrt.general("Please check if appropriate permissions are available to write in the directory")
-            exit()
+            sys.exit()
 
 
 def mainfunc():
+    statdcrt.section("Indexing tickets...")
     try:
         prodobjc = Producer()
         prodobjc.check_repolist_version_and_start()
-    except Exception as expt:
+    except KeyError as expt:
         statdcrt.failure("Could not index tickets")
         statdcrt.general("Please check if the environment variables are configured properly")
-        exit()
+        sys.exit()
+    except NewConnectionError as expt:
+        statdcrt.failure("Could not index tickets")
+        statdcrt.general("Please check if the repository listing is available in the specified location")
+        sys.exit()
+    except MaxRetryError as expt:
+        statdcrt.failure("Could not index tickets")
+        statdcrt.general("Exceeded number of retries while attempting to fetch the repository listing")
+        sys.exit()
+    except KeyboardInterrupt as expt:
+        print("\n", end="")
+        statdcrt.failure("Could not index tickets")
+        statdcrt.general("Process abortion requested by the user")
+        sys.exit()
 
 
 if __name__ == "__main__":
