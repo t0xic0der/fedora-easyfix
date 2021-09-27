@@ -15,13 +15,19 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light bg-light sticky-top">
         <div class="container-fluid d-flex">
             <!-- TODO Full menu should be available on desktop-->
             <a class="navbar-brand flex-lg-fill" href="#">
                 <!-- TODO Optimize logo -->
-                <img src="../static/images/easyfix-logo-not-optimized.png" alt="Fedora Logo">
+                <img src="../static/imgs/easyfix-logo.png" alt="Fedora Easyfix Logo">
             </a>
+            <!-- Search Bar -->
+            <form action="GET">
+                <label for="search-bar"></label>
+                <input type="text" id="search-bar" placeholder="Search for a project">
+            </form>
+            <!--Nav Toggle-->
             <button class="navbar-toggler d-flex justify-self-end" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -54,28 +60,23 @@
             </div>
         </div>
     </nav>
-    <header>
-        <!-- Add orientation focused content here -->
-    </header>
-    <main class="container-fluid">
-        <!-- Quick Search -->
-        <section class="container">
+    <header class="jumbotron jumbotron-fluid p-lg-4">
+        <div class="container container-fluid">
+            <h1 class="display-4">Welcome to Easyfix</h1>
+            <p class="lead">Your journey with Fedora begins here.</p>
             <form action="GET">
                 <!-- Search Bar -->
-                <label for="search-bar">Search up a project here</label>
+                <label for="search-bar"></label>
                 <!-- Search Options -->
-                <input type="text" id="search-bar" placeholder="Search or add filters...">
-                <label for="sort-by">Sort by:</label>
-                <select name="sort-by" id="sort-by">
-                    <option value="most-active">Most active</option>
-                    <option value="recent">Most recent</option>
-                    <option value="open-date">Open date</option>
-                    <option value="close-date">Close Date</option>
-                    <option value="last-modified">Last modified</option>
-                    <option value="priority">Priority</option>
-                </select>
+                <input type="text" id="search-bar" placeholder="Find a project">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="#" class="btn btn-secondary">Read the Docs</a>
             </form>
-        </section>
+        </div>
+    </header>
+    <main class="container-fluid">
+
+
         <!-- Easy Fix Topics -->
         <div class="container">
             <h1>Open Projects</h1>
@@ -127,24 +128,7 @@
                         </section>
             </article>
         </div>
-        <!-- Quick Search -->
-        <section class="container">
-            <form action="GET">
-                <!-- Search Bar -->
-                <label for="search-bar">Search up a project here</label>
-                <!-- Search Options -->
-                <input type="text" id="search-bar" placeholder="Search or add filters...">
-                <label for="sort-by">Sort by:</label>
-                <select name="sort-by" id="sort-by">
-                    <option value="most-active">Most active</option>
-                    <option value="recent">Most recent</option>
-                    <option value="open-date">Open date</option>
-                    <option value="close-date">Close Date</option>
-                    <option value="last-modified">Last modified</option>
-                    <option value="priority">Priority</option>
-                </select>
-            </form>
-        </section>
+
         <!-- Easy Fix Topics -->
     </main>
     <footer>
